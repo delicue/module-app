@@ -1,0 +1,11 @@
+{
+    "name": "delicue/module-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Module\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
