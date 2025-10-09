@@ -1,14 +1,24 @@
 <?php
 
 $loader = require __DIR__ . '/../vendor/autoload.php';
-$loader->add('Module\\', __DIR__ . '/../src/');
+require __DIR__ . '/../src/tools/functions.php';
 
-exec('npm run build');
+use Deli\App\Controllers\HomeController;
+use Deli\App\Database;
+use Deli\App\Router;
+use Deli\App\Session;
 
-use Module\Module;
+echo exec('npm run build');
 
-require Module::view('partials/header', ['title' => 'My App']);
-// require Module::view('index', ['title' => 'Home Page']);
+Session::start();
 
-$
-require Module::view('partials/footer');
+$router = new Router();
+$db = Database::getInstance();
+
+$router->get('/', HomeController::class . '@index');
+// $router->get('/about', HomeController::class . '@about');
+// $router->post('/submit', HomeController::class . '@submit');
+
+require view('partials/header');
+require $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+require view('partials/footer');

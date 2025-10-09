@@ -1,11 +1,14 @@
 <?php 
 
-namespace Delicue\Module\Controllers;
+namespace Deli\App\Controllers;
 
-use Module\Module;
+use Deli\App\Database;
+use Deli\App\View;
 
 class HomeController {
-    public function __invoke(): void {
-        Module::view('index', ['title' => 'Home Page']);
+    public function index(): string  {
+        $db = Database::getInstance();
+        $users = $db->fetchAll("SELECT * FROM users");
+        return View::render('index.view', ['users' => $users, 'title' => 'Home Page']);
     }
 }

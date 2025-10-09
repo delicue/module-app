@@ -1,9 +1,9 @@
 {
-    "name": "delicue/module-app",
+    "name": "deli/app",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Module\\": "src/"
+            "Deli\\App\\": "src/"
         }
     },
     "minimum-stability": "dev",

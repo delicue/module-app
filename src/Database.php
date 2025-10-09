@@ -1,6 +1,6 @@
 <?php 
 
-namespace Module;
+namespace Deli\App;
 
 use PDO;
 
@@ -9,8 +9,13 @@ class Database {
     private $connection;
 
     private function __construct() {
-        $this->connection = new PDO('sqlite:' . __DIR__ . '/../databases/database.sqlite');
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $this->connection = new PDO('sqlite:' . __DIR__ . '/databases/database.db');
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "Connected to the SQLite database successfully.";
+        } catch (\PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
     }
 
     public static function getInstance(): Database {
@@ -22,5 +27,11 @@ class Database {
 
     public function getConnection(): PDO {
         return $this->connection;
+    }
+
+    public static function fetchAll($query, $params = []): array {
+        $stmt = self::getInstance()->getConnection()->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
