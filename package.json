@@ -1,4 +1,6 @@
 {
+  "name": "deli-app",
+  "description": "A simple PHP MVC framework with routing, templating, and database integration.",
   "scripts": {
     "build": "npm run tailwindcss-build",
     "dev": "npm run tailwindcss-dev",

@@ -1,5 +1,5 @@
 {
-    "name": "deli/app",
+    "name": "deli/deli-app",
     "type": "project",
     "autoload": {
         "psr-4": {
