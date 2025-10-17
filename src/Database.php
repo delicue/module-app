@@ -12,8 +12,9 @@ class Database {
         try {
             $this->connection = new PDO('sqlite:' . __DIR__ . '/databases/database.db');
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected to the SQLite database successfully.";
+            Log::info("Connected to the SQLite database successfully.");
         } catch (\PDOException $e) {
+            Log::error("Database connection failed: " . $e->getMessage());
             die("Database connection failed: " . $e->getMessage());
         }
     }

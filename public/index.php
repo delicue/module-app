@@ -3,22 +3,22 @@
 $loader = require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/tools/functions.php';
 
+Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/../')->load();
+
 use Deli\App\Controllers\HomeController;
-use Deli\App\Database;
 use Deli\App\Router;
-use Deli\App\Session;
 
-echo exec('npm run build');
-
-Session::start();
+exec('npm run build');
 
 $router = new Router();
-$db = Database::getInstance();
 
 $router->get('/', HomeController::class . '@index');
+$router->post('/add-user', HomeController::class . '@addUser');
 // $router->get('/about', HomeController::class . '@about');
 // $router->post('/submit', HomeController::class . '@submit');
 
+$content = $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+
 require view('partials/header');
-require $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+require $content;
 require view('partials/footer');

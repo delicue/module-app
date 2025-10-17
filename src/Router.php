@@ -13,13 +13,18 @@ class Router {
         $this->routes['POST'][$uri] = $action;
     }
 
-    public function dispatch($uri, $method) {
+    /**
+     * 
+     * @param mixed $uri
+     * @param mixed $method
+     */
+    public function dispatch($uri, $method): string {
         if (isset($this->routes[$method][$uri])) {
             $action = $this->routes[$method][$uri];
             if (is_callable($action)) {
                 return call_user_func($action);
             } elseif (is_string($action)) {
-                list($controller, $method) = explode('@', $action);
+                [$controller, $method] = explode('@', $action);
                 if (class_exists($controller)) {
                     $controllerInstance = new $controller();
                     if (method_exists($controllerInstance, $method)) {
