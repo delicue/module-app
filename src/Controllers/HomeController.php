@@ -13,17 +13,30 @@ class HomeController {
     }
 
     public function addUser(): string {
-        $name = $_POST['name'] ?? '';
-        $email = $_POST['email'] ?? '';
-        if (!empty($name)) {
-            $db = Database::getInstance();
-            $stmt = $db->getConnection()->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-        }
-        header('Location: /');
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new \Exception('Invalid request method.');
+            }
+            if (verifyCsrfToken($_POST['_csrf_token'] ?? '')) {
+                throw new \Exception('Invalid CSRF token.');
+            }
+            $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
 
-        exit();
+            if (!empty($name) && !empty($email)) {
+                $db = Database::getInstance();
+                $stmt = $db->getConnection()->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
+                $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+            }
+            header('Location: /');
+
+            exit();
+        }
+        catch (\Exception $e) {
+            http_response_code(400);
+            return "Error: " . htmlspecialchars($e->getMessage());
+        }
     }
 }

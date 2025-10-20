@@ -51,3 +51,11 @@ function generateCsrfToken(): string
     }
     return $_SESSION['_csrf_token'];
 }
+
+function verifyCsrfToken(string $token): bool
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    return hash_equals($_SESSION['_csrf_token'] ?? '', $token);
+}

@@ -23,4 +23,6 @@ class Session {
         self::start();
         session_destroy();
     }
+
+    public 
 }
