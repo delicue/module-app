@@ -24,5 +24,15 @@ class Session {
         session_destroy();
     }
 
-    public 
+    public static function clear(): void {
+        self::start();
+        $_SESSION = [];
+    }
+
+    public static function unset(string $key): void {
+        self::start();
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+    }
 }

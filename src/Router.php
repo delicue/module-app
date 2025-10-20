@@ -34,6 +34,6 @@ class Router {
             }
         }
         http_response_code(404);
-        return '404 Not Found';
+        return view('errors/404.view');
     }
 }

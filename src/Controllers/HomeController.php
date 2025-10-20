@@ -17,11 +17,11 @@ class HomeController {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 throw new \Exception('Invalid request method.');
             }
-            if (verifyCsrfToken($_POST['_csrf_token'] ?? '')) {
+            if (!verifyCsrfToken($_POST['_csrf_token_add_user'] ?? '')) {
                 throw new \Exception('Invalid CSRF token.');
             }
-            $name = $_POST['name'] ?? '';
-            $email = $_POST['email'] ?? '';
+            $name = $_POST['name'];
+            $email = $_POST['email'];
 
             if (!empty($name) && !empty($email)) {
                 $db = Database::getInstance();

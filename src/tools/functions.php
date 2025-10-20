@@ -1,5 +1,7 @@
 <?php
 
+use Deli\App\Session;
+
 function view(string $file): string
 {
     return base_path("resources/views/{$file}.php");
@@ -41,21 +43,15 @@ function model(string $table_name)
     throw new Exception("Model class {$model_class} does not exist.");
 }
 
-function generateCsrfToken(): string
+function generateCsrfToken(string $form_name): string
 {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    if (Session::get("_csrf_token_$form_name") === null) {
+        Session::set("_csrf_token_$form_name", bin2hex(random_bytes(32)));
     }
-    if (empty($_SESSION['_csrf_token'])) {
-        $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['_csrf_token'];
+    return Session::get("_csrf_token_$form_name");
 }
 
-function verifyCsrfToken(string $token): bool
+function verifyCsrfToken(string $form_name): bool
 {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    return hash_equals($_SESSION['_csrf_token'] ?? '', $token);
+    return hash_equals(Session::get("_csrf_token_{$form_name}"), $_POST["_csrf_token_{$form_name}"] ?? '');
 }
