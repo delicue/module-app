@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App;
 
 class Log {
     public static function info($message) {

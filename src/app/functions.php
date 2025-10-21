@@ -1,6 +1,6 @@
 <?php
 
-use Deli\App\Session;
+use App\Session;
 
 function view(string $file): string
 {
@@ -18,7 +18,7 @@ function public_path($path = ''): string
 
 function data(string $key, $default = null)
 {
-    return Deli\App\View::$data[$key] ?? $default;
+    return App\View::$data[$key] ?? $default;
 }
 
 function script(string $filename): string
@@ -36,7 +36,7 @@ function dd($data): void
 
 function model(string $table_name)
 {
-    $model_class = 'Deli\\App\\Models\\' . ucfirst($table_name);
+    $model_class = 'App\\Models\\' . ucfirst($table_name);
     if (class_exists($model_class)) {
         return new $model_class();
     }

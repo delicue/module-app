@@ -1,20 +1,76 @@
+<script>
+    function searchUsers() {
+        const input = document.querySelector('#userSearch');
+        const filter = input.value.toLowerCase();
+        const userList = Array.from(document.querySelectorAll('#userList li'));
+
+        if(!input.value) {
+
+            userList.forEach(user => {
+                user.style.display = '';
+            });
+            return;
+        }
+
+        userList.forEach(user => {
+            user.style.display = '';
+            const name = user.textContent.toLowerCase();
+            const email = user.textContent.toLowerCase();
+            if (!name.includes(filter) && !email.includes(filter)) {
+                user.style.display = '';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.querySelector('#userSearch');
+        input.addEventListener("keyup", searchUsers());
+    });
+
+    // async function fetchUsers() {
+    //     try {
+    //         const users = <?php echo json_encode(data('users')) ?? '[]' ?>;
+    //         const userList = document.getElementById('userList');
+    //         users.forEach(user => {
+    //             const li = document.createElement('li');
+    //             li.className = 'bg-slate-600 hover:bg-stone-200 text-slate-100 transition-all delay-100 duration-100 hover:text-slate-800 hover:translate-y-1 shadow-xl hover:shadow-2xl rounded flex';
+    //             li.innerHTML = `
+    //                 <div class="truncate text-center basis-1/4 content-center bg-white text-slate-800 font-bold">${user.id}</div>
+    //                 <div class="basis-3/4 p-4">
+    //                     <div class="truncate">${user.name}</div>
+    //                     <div class="truncate">${user.email}</div>
+    //                 </div>
+    //             `;
+    //             userList.appendChild(li);
+    //         });
+    //     } catch (error) {
+    //         console.error('Error fetching users:', error);
+    //     }
+    // }
+</script>
 <main class="bg-gray-200 p-4 text-gray-800 h-screen w-full">
     <h1 class="text-3xl text-center font-bold my-4">
         User Database
     </h1>
 
     <!-- Users List -->
-    <!-- <ul class="mb-8 px-4 py-8 bg-gray-100 shadow rounded border-slate-200 hover:border-slate-400 border container mx-auto grid grid-cols-4 gap-4">
+    <div class="container mx-auto px-8 py-4 bg-white rounded shadow mb-4">
+        <h3 class="text-2xl mb-2">Search Users</h3>
+        <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
+    </div>
+    <ul id="userList" class="mb-8 p-16 bg-white shadow rounded border-slate-100 hover:border-slate-200 border container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <?php foreach (data('users') as $user): ?>
-            <li class="bg-slate-600 hover:bg-slate-400 text-slate-100 transition-all delay-100 duration-200 hover:text-slate-800 shadow-xl hover:shadow-2xl rounded flex">
-                <div class="truncate text-center basis-1/4 content-center bg-slate-100 text-slate-800 font-bold"><?= htmlspecialchars($user['id']) ?></div>
-                <div class="basis-3/4 p-4">
-                    <div class="truncate"><?= htmlspecialchars($user['name']) ?></div>
-                    <div class="truncate"><?= htmlspecialchars($user['email']) ?></div>
+            <li class="text-slate-100 bg-white bg-gradient-to-tr from-10% to-90% from-slate-800 to-amber-300/75 transition-all
+            delay-100 duration-100 hover:translate-y-1 shadow-xl hover:shadow-2xl
+            rounded-lg">
+                <div class="text-center content-center bg-slate-700/75 rounded-t-md p-2 border-b mb-2 lg:mb-4 border-b-emerald-200">ID: <?= htmlspecialchars($user['id']) ?></div>
+                <div class="p-4 text-wrap items-center">
+                    <p class="text-wrap break-all"><?= htmlspecialchars($user['name']) ?></p>
+                    <p class="text-wrap break-all"><?= htmlspecialchars($user['email']) ?></p>
                 </div>
             </li>
         <?php endforeach; ?>
-    </ul> -->
+    </ul>
 
     <?php //require view('users/index.view') ?>
 
@@ -24,9 +80,9 @@
         <h2 class="text-2xl font-bold mb-4">Add New User</h2>
         <div class="mb-4 flex gap-4 justify-center">
             <input type="text" autocomplete="name" name="name" placeholder="Enter user name" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
-            <?= '<span class="text-red-600">'. (htmlspecialchars(\Deli\App\Forms\AddUserForm::$errors['name'] ?? '')).'</span>' ?>
+            <?= '<span class="text-red-600">'. (htmlspecialchars(\App\Forms\AddUserForm::$errors['name'] ?? '')).'</span>' ?>
             <input type="email" name="email" autocomplete="email" placeholder="Enter user email" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
-            <p><?= '<span class="text-red-600">'. (htmlspecialchars(\Deli\App\Forms\AddUserForm::$errors['email'] ?? '')).'</span>' ?></p>
+            <p><?= '<span class="text-red-600">'. (htmlspecialchars(\App\Forms\AddUserForm::$errors['email'] ?? '')).'</span>' ?></p>
         </div>
         <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">
     </form> -->

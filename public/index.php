@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../src/setup.php';
+require __DIR__ . '/../src/app/setup.php';
 
 // Dispatch the request. This will populate any variables needed in the partials as well.
 $content = $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

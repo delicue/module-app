@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App;
 
 use PDO;
 
@@ -34,5 +34,15 @@ class Database {
         $stmt = self::getInstance()->getConnection()->prepare($query);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function execute($query, $params = []): bool {
+        $stmt = self::getInstance()->getConnection()->prepare($query);
+        return $stmt->execute($params);
+    }
+
+    public static function all($table): array {
+        $query = "SELECT * FROM :table";
+        return self::fetchAll($query, [$table]);
     }
 }

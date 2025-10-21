@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App;
 
 class Session {
     public static function start(): void {

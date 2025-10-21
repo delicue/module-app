@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App;
 
 class Module {
     private static array $values = [];

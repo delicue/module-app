@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App\Http;
 
 class Router {
     public array $routes = [];
@@ -13,21 +13,20 @@ class Router {
     }
 
     public function post($uri, $action, array $data = []) {
-
         $this->routes['POST'][$uri] = $action;
         $this->routeData[$uri] = $data;
     }
 
     /**
      * 
-     * @param mixed $uri
-     * @param mixed $method
+     * @param mixed $uri The request URI
+     * @param mixed $method The HTTP method (GET, POST, etc.)
      */
     public function dispatch($uri, $method): string {
         if (isset($this->routes[$method][$uri])) {
             $action = $this->routes[$method][$uri];
             if (is_callable($action)) {
-                return call_user_func($action,);
+                return call_user_func($action, ...$this->routeData[$uri]);
             } elseif (is_string($action)) {
                 [$controller, $method] = explode('@', $action);
                 if (class_exists($controller)) {

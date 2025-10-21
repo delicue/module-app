@@ -1,6 +1,6 @@
 <?php
 
-namespace Deli\App\Models;
+namespace App\Models;
 
 class Model {
     protected string $table;

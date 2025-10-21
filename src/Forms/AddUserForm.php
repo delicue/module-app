@@ -1,6 +1,6 @@
 <?php
 
-namespace Deli\App\Forms;
+namespace App\Forms;
 
 class AddUserForm {
 

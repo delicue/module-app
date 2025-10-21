@@ -1,9 +1,9 @@
 <?php 
 
-namespace Deli\App\Controllers;
+namespace App\Controllers;
 
-use Deli\App\Database;
-use Deli\App\View;
+use App\Database;
+use App\View;
 
 class UserController {
     public function index(): string {

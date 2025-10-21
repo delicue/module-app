@@ -1,6 +1,6 @@
 <?php 
 
-namespace Deli\App;
+namespace App;
 
 class View {
     public static array $data = [];
