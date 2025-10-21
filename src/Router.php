@@ -4,13 +4,18 @@ namespace Deli\App;
 
 class Router {
     public array $routes = [];
+    public array $routeData = [];
 
-    public function get($uri, $action) {
+    public function get($uri, $action, array $data = []) {
+
         $this->routes['GET'][$uri] = $action;
+        $this->routeData[$uri] = $data;
     }
 
     public function post($uri, $action, array $data = []) {
+
         $this->routes['POST'][$uri] = $action;
+        $this->routeData[$uri] = $data;
     }
 
     /**
@@ -22,7 +27,7 @@ class Router {
         if (isset($this->routes[$method][$uri])) {
             $action = $this->routes[$method][$uri];
             if (is_callable($action)) {
-                return call_user_func($action);
+                return call_user_func($action,);
             } elseif (is_string($action)) {
                 [$controller, $method] = explode('@', $action);
                 if (class_exists($controller)) {

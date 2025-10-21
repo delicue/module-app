@@ -1,6 +1,6 @@
 <main class="bg-gray-200 p-4 text-gray-800 h-screen w-full">
     <h1 class="text-3xl text-center font-bold my-4">
-        Users
+        User Database
     </h1>
 
     <!-- Users List -->
@@ -17,7 +17,6 @@
     </ul> -->
 
     <?php //require view('users/index.view') ?>
-    <?php require Deli\App\View::render('/users/show.view', ['id' => 1]) ?>
 
     <!-- Add User Form -->
     <!-- <form class="bg-gray-100 rounded p-4 container mx-auto" method="POST" action="/add-user">
