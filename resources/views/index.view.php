@@ -48,14 +48,15 @@
     //     }
     // }
 </script>
-<main class="bg-gray-200 p-4 text-gray-800 h-screen w-full">
+<main class="bg-gray-100 p-4 text-gray-800 h-screen w-full">
+
     <h1 class="text-3xl text-center font-bold my-4">
         User Database
     </h1>
 
     <!-- Users List -->
-    <div class="container mx-auto px-8 py-4 bg-white rounded shadow mb-4">
-        <h3 class="text-2xl mb-2">Search Users</h3>
+    <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-800 hover:shadow-lg mb-4 hover:shadow-sky-700">
+        <h3 class="text-2xl font-bold mb-4">Search Users</h3>
         <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
     </div>
     <ul id="userList" class="mb-8 p-16 bg-white shadow rounded border-slate-100 hover:border-slate-200 border container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -72,10 +73,8 @@
         <?php endforeach; ?>
     </ul>
 
-    <?php //require view('users/index.view') ?>
-
     <!-- Add User Form -->
-    <!-- <form class="bg-gray-100 rounded p-4 container mx-auto" method="POST" action="/add-user">
+    <form class="container mx-auto px-8 py-4 bg-white rounded shadow mb-4" method="POST" action="/add-user">
         <input type="hidden" name="_csrf_token_add_user" value="<?= htmlspecialchars(generateCsrfToken('add_user')) ?>">
         <h2 class="text-2xl font-bold mb-4">Add New User</h2>
         <div class="mb-4 flex gap-4 justify-center">
@@ -85,5 +84,5 @@
             <p><?= '<span class="text-red-600">'. (htmlspecialchars(\App\Forms\AddUserForm::$errors['email'] ?? '')).'</span>' ?></p>
         </div>
         <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">
-    </form> -->
+    </form>
 </main>
