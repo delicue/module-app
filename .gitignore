@@ -2,3 +2,5 @@
 .env
 /node_modules/
 /public/css/
+/src/databases/
+src/databases/database.db

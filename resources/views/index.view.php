@@ -4,6 +4,24 @@
         const filter = input.value.toLowerCase();
         const userList = Array.from(document.querySelectorAll('#userList li'));
 
+        function orderByName(a, b) {
+            const nameA = a.textContent.toLowerCase();
+            const nameB = b.textContent.toLowerCase();
+            return nameA.localeCompare(nameB);
+        }
+
+        function orderByEmail(a, b) {
+            const emailA = a.textContent.toLowerCase();
+            const emailB = b.textContent.toLowerCase();
+            return emailA.localeCompare(emailB);
+        }
+
+        function orderById(a, b) {
+            const idA = parseInt(a.querySelector('div').textContent.replace('ID: ', ''));
+            const idB = parseInt(b.querySelector('div').textContent.replace('ID: ', ''));
+            return idA - idB;
+        }
+
         if(!input.value) {
 
             userList.forEach(user => {
@@ -85,4 +103,12 @@
         </div>
         <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">
     </form>
+
+    <?=
+        render_component('user-card', [
+            'username' => 'johndoe',
+            'email' => 'john@example.com',
+            'class' => 'bg-blue-400'
+        ])
+    ?>
 </main>

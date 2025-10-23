@@ -59,6 +59,6 @@ function verifyCsrfToken(string $form_name): bool
 function render_component(string $template, array $data = []): string {
     extract($data); // Makes array keys available as variables
     ob_start(); // Start output buffering
-    include "components/{$template}.php"; // Include the component template
+    include __DIR__ . "/../../resources/views/components/{$template}.cp.php"; // Include the component template
     return ob_get_clean(); // Get and clean the buffered output
 }
