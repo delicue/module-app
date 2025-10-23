@@ -17,7 +17,7 @@ class HomeController {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 throw new \Exception('Invalid request method.');
             }
-            if (!verifyCsrfToken($_POST['_csrf_token_add_user'] ?? '')) {
+            if (!verifyCsrfToken('add_user')) {
                 throw new \Exception('Invalid CSRF token.');
             }
             $name = $_POST['name'];
