@@ -53,5 +53,12 @@ function generateCsrfToken(string $form_name): string
 
 function verifyCsrfToken(string $form_name): bool
 {
-    return hash_equals(Session::get("_csrf_token_{$form_name}"), $_POST["_csrf_token_{$form_name}"] ?? '');
+    return hash_equals(Session::get("_csrf_token_{$form_name}"), $_POST["_csrf_token_{$form_name}"]);
+}
+
+function render_component(string $template, array $data = []): string {
+    extract($data); // Makes array keys available as variables
+    ob_start(); // Start output buffering
+    include "components/{$template}.php"; // Include the component template
+    return ob_get_clean(); // Get and clean the buffered output
 }
