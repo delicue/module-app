@@ -1,31 +1,25 @@
-<?php 
+<?php
 
 namespace App;
 
-class Module {
-    private static array $values = [];
+use App\EventDispatcher;
 
-    public static function set(array $key_value): void {
-        foreach ($key_value as $key => $value) {
-            self::$values[$key] = $value;
+class Module
+{
+    protected static ?EventDispatcher $dispatcher = null;
+
+    /** Set the shared EventDispatcher instance */
+    public static function setDispatcher(EventDispatcher $dispatcher): void
+    {
+        self::$dispatcher = $dispatcher;
+    }
+
+    /** Get (or lazily create) the shared EventDispatcher instance */
+    public static function getDispatcher(): EventDispatcher
+    {
+        if (self::$dispatcher === null) {
+            self::$dispatcher = new EventDispatcher();
         }
-    }
-
-    public static function get(string $key) {
-        return self::$values[$key] ?? null;
-    }
-
-    public static function view($file, ?callable $func = null): string {
-        if ($func) {
-            call_user_func($func);
-        }
-        return self::base_path("resources/views/{$file}.php");
-    }
-    public static function base_path($path = ''): string {
-        return __DIR__ . "/../{$path}";
-    }
-
-    public static function db(): Database {
-        return Database::getInstance();
+        return self::$dispatcher;
     }
 }
