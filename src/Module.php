@@ -1,25 +1,30 @@
 <?php
+declare(strict_types=1);
 
 namespace App;
 
 use App\EventDispatcher;
 
-class Module
+final class Module
 {
-    protected static ?EventDispatcher $dispatcher = null;
+    /**
+     * Shared EventDispatcher instance (lazy-initialized).
+     */
+    private static ?EventDispatcher $dispatcher = null;
 
-    /** Set the shared EventDispatcher instance */
-    public static function setDispatcher(EventDispatcher $dispatcher): void
+    /**
+     * Set (or clear) the shared EventDispatcher instance.
+     */
+    public static function setDispatcher(?EventDispatcher $dispatcher): void
     {
         self::$dispatcher = $dispatcher;
     }
 
-    /** Get (or lazily create) the shared EventDispatcher instance */
+    /**
+     * Get (or lazily create) the shared EventDispatcher instance.
+     */
     public static function getDispatcher(): EventDispatcher
     {
-        if (self::$dispatcher === null) {
-            self::$dispatcher = new EventDispatcher();
-        }
-        return self::$dispatcher;
+        return self::$dispatcher ??= new EventDispatcher();
     }
 }
