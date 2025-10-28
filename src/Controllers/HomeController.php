@@ -9,7 +9,6 @@ use App\View;
 
 class HomeController {
 
-    #[Route('/')]
     public function index(): string  {
         $db = Database::getInstance();
         if(Session::get('users') === null) {
@@ -32,11 +31,13 @@ class HomeController {
 
             if (!empty($name) && !empty($email)) {
                 $db = Database::getInstance();
+                
                 $stmt = $db->getConnection()->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':email', $email);
                 $stmt->execute();
             }
+            Session::clear();
             header('Location: /');
 
             exit();
