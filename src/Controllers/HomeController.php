@@ -3,12 +3,19 @@
 namespace App\Controllers;
 
 use App\Database;
+use App\Http\Route;
+use App\Session;
 use App\View;
 
 class HomeController {
+
+    #[Route('/')]
     public function index(): string  {
         $db = Database::getInstance();
-        $users = $db->fetchAll("SELECT * FROM users");
+        if(Session::get('users') === null) {
+            Session::set('users', $db->fetchAll("SELECT * FROM users"));
+        }
+        $users = Session::get('users');
         return View::render('index.view', ['users' => $users, 'title' => 'Home Page']);
     }
 

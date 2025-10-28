@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= data('title') ?? 'Home' ?></title>
-    <link rel="stylesheet" href="css/generated-styles.css">
-    <!-- <script src="js/dom-refresh.js" defer></script> -->
+    <!-- <link rel="stylesheet" href="css/generated-styles.css"> -->
+    <!-- Tailwind CSS via CDN for simplicity -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-    <header class="bg-slate-800 text-slate-200 p-4 flex flex-wrap justify-between">
-        <h1 class="text-2xl font-bold text-white flex-col"><?= getenv('APP_NAME') ?: 'My App' ?></h1>
+
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-slate-800 text-slate-200 p-4">
+        <h1 class="text-2xl font-bold text-white"><?= getenv('APP_NAME') ?: 'My App' ?></h1>
         <!-- <nav>
             <ul class="flex space-x-4">
                 <li><a href="/" class="hover:underline">Home</a></li>
