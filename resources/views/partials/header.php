@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= data('title') ?? 'Home' ?></title>
-    <!-- <link rel="stylesheet" href="css/generated-styles.css"> -->
+    <link rel="stylesheet" href="css/generated-styles.css">
     <!-- Tailwind CSS via CDN for simplicity -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
 </head>
 
 <body class="bg-gray-100 min-h-screen">

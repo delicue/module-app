@@ -1,6 +1,6 @@
 /vendor/
 .env
 /node_modules/
-/public/css/
 /src/databases/
 src/databases/database.db
+public/css/generated-styles.css
