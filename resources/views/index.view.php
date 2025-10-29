@@ -1,8 +1,8 @@
 <main class="px-4 py-8">
 
-    <h1 class="text-3xl text-gray-800 text-center font-bold mb-8">
+    <h2 class="text-3xl text-gray-800 text-center font-bold mb-8">
         User Database- Manage Your Users Easily
-    </h1>
+    </h2>
 
     <!-- User Search -->
     <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700">
@@ -10,17 +10,39 @@
         <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
     </div>
     <!-- Users List -->
-    <ul id="userList" class="mb-16 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <?php foreach (data('users') as $user): ?>
-            <li class="bg-white transition-all duration-200 hover:translate-y-1 shadow-lg hover:shadow-2xl rounded-lg">
-                <p class="text-gray-200 bg-slate-700 rounded-t-md p-2 border-b border-b-emerald-200">ID: <?= htmlspecialchars($user['id']) ?></p>
-                <div class="text-slate-700 bg-linear from-slate-200 to-gray-800 py-4 px-2 rounded-b-md truncate">
-                    <p><?= htmlspecialchars($user['name']) ?></p>
-                    <p><?= htmlspecialchars($user['email']) ?></p>
-                </div>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <?php
+        if (empty(data('users'))) : ?>
+            <p class="text-center text-gray-600 mb-16">No users found. Please add some users.</p>
+    <?php else : ?>
+        <ul id="userList" class="mb-16 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <?php foreach (data('users') as $user): ?>
+                <li class="user-item bg-white transition-all duration-200 hover:translate-y-1 shadow-lg hover:shadow-2xl rounded-lg">
+                    <p class="text-gray-200 bg-slate-700 rounded-t-md p-2 border-b border-b-emerald-200">ID: <?= htmlspecialchars($user['id']) ?></p>
+                    <div class="text-slate-700 bg-linear from-slate-200 to-gray-800 py-4 px-2 rounded-b-md truncate">
+                        <p class="user-name"><?= htmlspecialchars($user['name']) ?></p>
+                        <p class="user-email"><?= htmlspecialchars($user['email']) ?></p>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <script>
+            document.getElementById('userSearch').addEventListener('input', function(e) {
+                const searchText = e.target.value.toLowerCase();
+                const userItems = document.getElementsByClassName('user-item');
+                
+                Array.from(userItems).forEach(item => {
+                    const name = item.querySelector('.user-name').textContent.toLowerCase();
+                    const email = item.querySelector('.user-email').textContent.toLowerCase();
+                    
+                    if (name.includes(searchText) || email.includes(searchText)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
 
     <!-- Add User Form -->
     <form class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700" method="POST" action="/add-user">
@@ -36,36 +58,6 @@
     </form>
 </main>
 <script>
-    function searchUsers() {
-        const input = document.querySelector('#userSearch');
-        const filter = input.value.toLowerCase();
-        const userList = Array.from(document.querySelectorAll('#userList li'));
-        if (!input.value) {
-
-            userList.forEach(user => {
-                user.style.display = '';
-            });
-            return;
-        }
-
-        userList.forEach(user => {
-            user.style.display = '';
-            const name = user.textContent.toLowerCase();
-            const email = user.textContent.toLowerCase();
-            if (!name.includes(filter) && !email.includes(filter)) {
-                user.style.display = '';
-            }
-            else {
-                user.style.display = 'none';
-            }
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.querySelector('#userSearch');
-        input.addEventListener("keyup", searchUsers);
-        console.log('User search initialized.');
-    });
 
     // (function() {
     //     function showFlash(args) {
