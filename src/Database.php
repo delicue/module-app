@@ -34,6 +34,20 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Finds a single record from the database.
+     *
+     * @param [type] $query
+     * @param array $params
+     * @return array|null
+     */
+    public static function fetchOne($query, $params = []): ?array {
+        $stmt = self::getInstance()->getConnection()->prepare($query);
+        $stmt->execute($params);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result === false ? null : $result;
+    }
+
     public static function execute($query, $params = []): bool {
         $stmt = self::getInstance()->getConnection()->prepare($query);
         return $stmt->execute($params);
