@@ -10,8 +10,7 @@
         <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
     </div>
     <!-- Users List -->
-    <?php
-        if (empty(data('users'))) : ?>
+    <?php if (empty(data('users'))) : ?>
             <p class="text-center text-gray-600 mb-16">No users found. Please add some users.</p>
     <?php else : ?>
         <ul id="userList" class="mb-16 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

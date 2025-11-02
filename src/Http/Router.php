@@ -6,14 +6,8 @@ class Router {
     public array $routes = [];
     public array $routeData = [];
 
-    public function get($uri, $action, array $data = []) {
-
-        $this->routes['GET'][$uri] = $action;
-        $this->routeData[$uri] = $data;
-    }
-
-    public function post($uri, $action, array $data = []) {
-        $this->routes['POST'][$uri] = $action;
+    public function register($uri, $method, $action, array $data = []) {
+        $this->routes[$method][$uri] = $action;
         $this->routeData[$uri] = $data;
     }
 

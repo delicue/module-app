@@ -9,6 +9,7 @@ use App\View;
 
 class HomeController {
 
+    #[Route('/', 'GET')]
     public function index(): string  {
         $db = Database::getInstance();
         if(Session::get('users') === null) {
@@ -18,6 +19,7 @@ class HomeController {
         return View::render('index.view', ['users' => $users, 'title' => 'Home Page']);
     }
 
+    #[Route('/add-user', 'POST')]
     public function addUser(): string {
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
