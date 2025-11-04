@@ -13,7 +13,6 @@ and responding from server with appropriate data, including 404 error.
 First, ensure you have PHP 8.4 installed
 Use the command `php serve` to run it in your local browser. By default, it is located at `https://localhost:3000`.
 
-
 ## Troubleshooting Notes
 
 - if there are namespacing issues due to structural changes, run `composer dump-autoload` to ensure the composer.json file
