@@ -7,16 +7,24 @@ use App\Http\Route;
 use App\Session;
 use App\View;
 
-class HomeController {
+class HomeController extends Controller {
 
     #[Route('/', 'GET')]
     public function index(): string  {
         $db = Database::getInstance();
-        if(Session::get('users') === null) {
-            Session::set('users', $db->fetchAll("SELECT * FROM users"));
-        }
-        $users = Session::get('users');
-        return View::render('index.view', ['users' => $users, 'title' => 'Home Page']);
+        // if(Session::get('users') === null) {
+        //     Session::set('users', $db->fetchAll("SELECT * FROM users"));
+        // }
+        // $users = Session::get('users');
+        // $users = $db->fetchAll("SELECT * FROM users");
+        return View::render('index.view', ['title' => 'Home Page']);
+    }
+
+    #[Route('/get-users', 'GET')]
+    public function getUsers(): string {
+        $db = Database::getInstance();
+        $users = $db->fetchAll("SELECT * FROM users");
+        return json_encode($users);
     }
 
     #[Route('/add-user', 'POST')]
