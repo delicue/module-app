@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App;
 
-use App\Controllers\Controller;
 use App\EventDispatcher;
 use App\Http\Router;
+use ReflectionClass;
 
 final class Module
 {
@@ -39,9 +40,7 @@ final class Module
 
     public static function getRouter(string $name): Router
     {
-        if (!isset(self::$routers[$name])) {
-            self::$routers[$name] = new Router();
-        }
+        self::$routers[$name] ??= new Router();
         return self::$routers[$name];
     }
 
@@ -65,25 +64,47 @@ final class Module
         self::$routers = [];
     }
 
-    public static function registerRouteAttributes(string $routerName = 'main'): void
+    /**
+     * Register routes from the @Route attributes in controller methods.
+     * @param string $routerName
+     * @return void
+     */
+    public static function registerRoutesFromAttributes(string $routerName = 'main'): void
     {
+        if (!self::hasRouter($routerName)) {
+            Log::error("Router '{$routerName}' does not exist. Please create it before registering routes.");
+            return;
+        }
+        Log::info("Registering routes from attributes into router '{$routerName}'");
         $router = self::getRouter($routerName);
 
-        // Register routes using reflection class attributes
-        $reflectionClass = new \ReflectionClass();
+        $controllerClasses = [];
+        // Collect all class names from Controllers folder
+        $controllerFiles = glob(__DIR__ . '/Controllers/*.php');
+        foreach ($controllerFiles as $file) {
+            // require_once $file;
+            $className = basename($file, '.php');
+            $controllerClasses[] = "App\\Controllers\\$className";
+        }
 
-        $methods = $reflectionClass->getMethods();
-        foreach ($methods as $method) {
-            $attributes = $method->getAttributes(Http\Route::class);
-            foreach ($attributes as $attribute) {
-                /** @var Http\Route $routeInstance */
-                $routeInstance = $attribute->newInstance();
-                Log::info("Found route attribute: [{$routeInstance->method}] {$routeInstance->uri} in {$method->class}::{$method->getName()}");
-                if($router instanceof Router) {
-                    $router->register(
-                        $routeInstance->method,
+        // dd($controllerClasses);
+        foreach ($controllerClasses as $subclass) {
+            // Create a ReflectionClass for the subclass
+            $reflectionClass = new ReflectionClass($subclass);
+
+            // Get methods of the subclass
+            $methods = $reflectionClass->getMethods();
+        
+            foreach ($methods as $method) {
+                $attributes = $method->getAttributes(Http\Route::class);
+                foreach ($attributes as $attribute) {
+                    /** @var Http\Route $routeInstance */
+                    $routeInstance = $attribute->newInstance();
+                    Log::info("Found route attribute: [{$routeInstance->method}] {$routeInstance->uri} in {$method->class}::{$method->getName()}");
+                    self::getRouter($routerName)->register(
                         $routeInstance->uri,
-                        $method::class . '@' . $method->getName(),
+                        $routeInstance->method,
+                        $reflectionClass->getName() . '@' . $method->getName(),
                         $routeInstance->data
                     );
                     Log::info("Registered route [{$routeInstance->method}] {$routeInstance->uri} to router '{$routeInstance->routerName}'");

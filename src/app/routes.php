@@ -1,12 +1,10 @@
 <?php
 
-use App\Controllers\HomeController;
-use App\Controllers\UserController;
-use App\Http\Route;
 use App\Http\Router;
 use App\Module;
 
-Module::registerRouteAttributes('main');
+Module::addRouter('main', new Router());
+Module::registerRoutesFromAttributes('main');
 
 // $router->get('/', HomeController::class . '@index');
 // $router->post('/add-user', HomeController::class . '@addUser');
