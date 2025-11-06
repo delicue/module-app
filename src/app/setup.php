@@ -1,19 +1,19 @@
 <?php
 
+exec('npm run build');
+
 require __DIR__ . '/../../vendor/autoload.php';
 require 'functions.php';
 require 'routes.php';
 
-exec('npm run build');
-
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/../../')->load();
 
 use App\Session;
 use App\Module;
 use App\EventDispatcher;
 
+Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/../../')->load();
+
 Session::start();
 
 // Create and register a shared EventDispatcher for the app
 Module::setDispatcher(new EventDispatcher());
-Module::addRouter('main', new App\Http\Router());
