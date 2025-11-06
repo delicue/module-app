@@ -1,4 +1,9 @@
 <main class="px-4 py-8">
+    <?php
+    // Example: emit a flash event from PHP so it can be hydrated to JS (use shared Module dispatcher)
+    \App\Module::getDispatcher()?->emit('flash', ['type' => 'success', 'message' => 'Welcome — to the User database. Just add or remove a user!']);
+    ?>
+    <div id="php-flash" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50"></div>
 
     <h2 class="text-3xl text-gray-800 text-center font-bold mb-8">
         User Database- Manage Your Users Easily
@@ -10,8 +15,9 @@
         <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
     </div>
     <!-- Users List -->
+    
     <?php if (empty(data('users'))) : ?>
-            <p class="text-center text-gray-600 mb-16">No users found. Please add some users.</p>
+        <p class="text-center text-gray-600 mb-16">No users found. Please add some users.</p>
     <?php else : ?>
         <ul id="userList" class="mb-16 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <?php foreach (data('users') as $user): ?>
@@ -58,35 +64,35 @@
 </main>
 <script>
 
-    // (function() {
-    //     function showFlash(args) {
-    //         var data = Array.isArray(args) ? args[0] : args;
-    //         if (Array.isArray(data) && data.length) data = data[0];
-    //         var msg = (data && data.message) ? data.message : String(data || '');
-    //         var el = document.getElementById('php-flash');
-    //         if (!el) return;
-    //         el.textContent = msg;
-    //         el.classList.remove('hidden');
-    //         setTimeout(function() {
-    //             el.classList.add('hidden');
-    //         }, 5000);
-    //     }
+    (function() {
+        function showFlash(args) {
+            var data = Array.isArray(args) ? args[0] : args;
+            if (Array.isArray(data) && data.length) data = data[0];
+            var msg = (data && data.message) ? data.message : String(data || '');
+            var el = document.getElementById('php-flash');
+            if (!el) return;
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            setTimeout(function() {
+                el.classList.add('hidden');
+            }, 5000);
+        }
 
-    //     // Always listen for DOM CustomEvent dispatched by the hydrator
-    //     document.addEventListener('flash', function(e) {
-    //         showFlash(e.detail);
-    //     });
+        // Always listen for DOM CustomEvent dispatched by the hydrator
+        document.addEventListener('flash', function(e) {
+            showFlash(e.detail);
+        });
 
-    //     // If the JS bridge exists, register on it. If not yet present, poll briefly.
-    //     if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
-    //         window.PHPEventEmitter.on('flash', showFlash);
-    //     } else {
-    //         var _i = setInterval(function() {
-    //             if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
-    //                 window.PHPEventEmitter.on('flash', showFlash);
-    //                 clearInterval(_i);
-    //             }
-    //         }, 50);
-    //     }
-    // })();
+        // If the JS bridge exists, register on it. If not yet present, poll briefly.
+        if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
+            window.PHPEventEmitter.on('flash', showFlash);
+        } else {
+            var _i = setInterval(function() {
+                if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
+                    window.PHPEventEmitter.on('flash', showFlash);
+                    clearInterval(_i);
+                }
+            }, 50);
+        }
+    })();
 </script>
