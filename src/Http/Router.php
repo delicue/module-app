@@ -5,8 +5,8 @@ namespace App\Http;
 use App\Log;
 
 class Router {
-    private array $routes = [];
-    private array $routeData = [];
+    protected array $routes = [];
+    protected array $routeData = [];
 
     public function getRoutes(): array {
         return $this->routes;
@@ -22,7 +22,7 @@ class Router {
      * @param mixed $uri The request URI
      * @param mixed $method The HTTP method (GET, POST, etc.)
      */
-    public function dispatch($uri, $method): string {
+    public function dispatch($uri, $method): ?string {
         Log::info("Attempting to dispatch route for {$method} {$uri}");
         if (isset($this->routes[$method][$uri])) {
             Log::info("Dispatching route for {$method} {$uri}. Action: " . print_r($this->routes[$method][$uri], true));

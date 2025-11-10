@@ -16,8 +16,8 @@ class HomeController extends Controller {
         //     Session::set('users', $db->fetchAll("SELECT * FROM users"));
         // }
         // $users = Session::get('users');
-        // $users = $db->fetchAll("SELECT * FROM users");
-        return View::render('index.view', ['title' => 'Home Page']);
+        $users = $db->fetchAll("SELECT * FROM users");
+        return View::render('pages/index.view', ['users' => $users, 'title' => 'Home Page']);
     }
 
     #[Route('/get-users', 'GET')]

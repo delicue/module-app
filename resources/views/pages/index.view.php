@@ -1,10 +1,4 @@
 <main class="px-4 py-8">
-    <?php
-    // Example: emit a flash event from PHP so it can be hydrated to JS (use shared Module dispatcher)
-    \App\Module::getDispatcher()?->emit('flash', ['type' => 'success', 'message' => 'Welcome — to the User database. Just add or remove a user!']);
-    ?>
-    <div id="php-flash" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50"></div>
-
     <h2 class="text-3xl text-gray-800 text-center font-bold mb-8">
         User Database- Manage Your Users Easily
     </h2>
@@ -21,6 +15,7 @@
     <?php else : ?>
         <ul id="userList" class="mb-16 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <?php foreach (data('users') as $user): ?>
+                <!-- List Item Template. Will be populated dynamically via JS fetch -->
                 <li class="user-item bg-white transition-all duration-200 hover:translate-y-1 shadow-lg hover:shadow-2xl rounded-lg">
                     <p class="text-gray-200 bg-slate-700 rounded-t-md p-2 border-b border-b-emerald-200">ID: <?= htmlspecialchars($user['id']) ?></p>
                     <div class="text-slate-700 bg-linear from-slate-200 to-gray-800 py-4 px-2 rounded-b-md truncate">
@@ -32,6 +27,7 @@
         </ul>
         <script>
             document.getElementById('userSearch').addEventListener('input', function(e) {
+                console.log('Search input changed:', e.target.value);
                 const searchText = e.target.value.toLowerCase();
                 const userItems = document.getElementsByClassName('user-item');
                 
@@ -45,6 +41,7 @@
                         item.style.display = 'none';
                     }
                 });
+                console.log('Filtered user items based on search text:', searchText);
             });
         </script>
     <?php endif; ?>
