@@ -10,13 +10,8 @@ use App\View;
 class HomeController extends Controller {
 
     #[Route('/', 'GET')]
-    public function index(): string  {
-        $db = Database::getInstance();
-        // if(Session::get('users') === null) {
-        //     Session::set('users', $db->fetchAll("SELECT * FROM users"));
-        // }
-        // $users = Session::get('users');
-        $users = $db->fetchAll("SELECT * FROM users");
+    public function __invoke(): string  {
+        $users = Database::getInstance()->fetchAll("SELECT * FROM users");
         return View::render('pages/index.view', ['users' => $users, 'title' => 'Home Page']);
     }
 
@@ -47,7 +42,6 @@ class HomeController extends Controller {
                 $stmt->bindParam(':email', $email);
                 $stmt->execute();
             }
-            Session::clear();
             header('Location: /');
 
             exit();

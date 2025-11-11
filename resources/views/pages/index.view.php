@@ -4,12 +4,30 @@
     </h2>
 
     <!-- User Search -->
-    <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700">
-        <h3 class="text-2xl font-bold mb-4">Search Users</h3>
-        <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 container mx-auto">
+        <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700">
+            <h3 class="text-2xl font-bold mb-4">Search Users</h3>
+            <input id="userSearch" type="text" placeholder="Search by name or email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
+        </div>
+        <!-- Add User Form -->
+        <form class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700" method="POST" action="/add-user">
+            <input type="hidden" name="_csrf_token_add_user" value="<?= htmlspecialchars(generateCsrfToken('add_user')) ?>">
+            <h2 class="text-2xl font-bold mb-4">Add New User</h2>
+            <div class="gap-4 flex">
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <input type="text" autocomplete="name" name="name" placeholder="Enter user name" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
+                    <?= '<span class="text-red-600">' . (htmlspecialchars(\App\Forms\AddUserForm::$errors['name'] ?? '')) . '</span>' ?>
+                    <input type="email" name="email" autocomplete="email" placeholder="Enter user email" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
+                    <p><?= '<span class="text-red-600">' . (htmlspecialchars(\App\Forms\AddUserForm::$errors['email'] ?? '')) . '</span>' ?></p>
+                </div>
+                <div>
+                    <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">
+                </div>
+            </div>
+        </form>
     </div>
     <!-- Users List -->
-    
+
     <?php if (empty(data('users'))) : ?>
         <p class="text-center text-gray-600 mb-16">No users found. Please add some users.</p>
     <?php else : ?>
@@ -25,42 +43,11 @@
                 </li>
             <?php endforeach; ?>
         </ul>
-        <script>
-            document.getElementById('userSearch').addEventListener('input', function(e) {
-                console.log('Search input changed:', e.target.value);
-                const searchText = e.target.value.toLowerCase();
-                const userItems = document.getElementsByClassName('user-item');
-                
-                Array.from(userItems).forEach(item => {
-                    const name = item.querySelector('.user-name').textContent.toLowerCase();
-                    const email = item.querySelector('.user-email').textContent.toLowerCase();
-                    
-                    if (name.includes(searchText) || email.includes(searchText)) {
-                        item.style.display = '';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-                console.log('Filtered user items based on search text:', searchText);
-            });
-        </script>
     <?php endif; ?>
 
-    <!-- Add User Form -->
-    <form class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700" method="POST" action="/add-user">
-        <input type="hidden" name="_csrf_token_add_user" value="<?= htmlspecialchars(generateCsrfToken('add_user')) ?>">
-        <h2 class="text-2xl font-bold mb-4">Add New User</h2>
-        <div class="mb-4 flex gap-4 justify-center">
-            <input type="text" autocomplete="name" name="name" placeholder="Enter user name" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
-            <?= '<span class="text-red-600">' . (htmlspecialchars(\App\Forms\AddUserForm::$errors['name'] ?? '')) . '</span>' ?>
-            <input type="email" name="email" autocomplete="email" placeholder="Enter user email" class="px-2 py-1 rounded w-1/2 bg-gray-200 text-gray-800">
-            <p><?= '<span class="text-red-600">' . (htmlspecialchars(\App\Forms\AddUserForm::$errors['email'] ?? '')) . '</span>' ?></p>
-        </div>
-        <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">
-    </form>
 </main>
+<script src="/js/user-search.js"></script>
 <script>
-
     (function() {
         function showFlash(args) {
             var data = Array.isArray(args) ? args[0] : args;

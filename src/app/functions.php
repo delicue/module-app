@@ -62,3 +62,7 @@ function render_component(string $template, array $data = []): string {
     include __DIR__ . "/../../resources/views/components/{$template}.cp.php"; // Include the component template
     return ob_get_clean(); // Get and clean the buffered output
 }
+
+function resource(string $path): string {
+    return __DIR__ . "/../../resources/" . ltrim($path, '/');
+}
