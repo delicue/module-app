@@ -3,9 +3,11 @@
 namespace App\Controllers;
 
 use App\Database;
+use App\Forms\AddUserForm;
 use App\Http\Route;
 use App\Session;
 use App\View;
+use Exception;
 
 class HomeController extends Controller {
 
@@ -26,15 +28,15 @@ class HomeController extends Controller {
     public function addUser(): string {
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                throw new \Exception('Invalid request method.');
+                throw new Exception('Invalid request method.');
             }
             if (!verifyCsrfToken('add_user')) {
-                throw new \Exception('Invalid CSRF token.');
+                throw new Exception('Invalid CSRF token.');
             }
             $name = $_POST['name'];
             $email = $_POST['email'];
 
-            if (!empty($name) && !empty($email)) {
+            if (AddUserForm::validate(['name' => $name, 'email' => $email])) {
                 $db = Database::getInstance();
                 
                 $stmt = $db->getConnection()->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
@@ -42,11 +44,14 @@ class HomeController extends Controller {
                 $stmt->bindParam(':email', $email);
                 $stmt->execute();
             }
+            else {
+                throw new Exception('Validation failed: ' . implode(', ', AddUserForm::$errors));
+            }
             header('Location: /');
 
             exit();
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             http_response_code(400);
             return "Error: " . htmlspecialchars($e->getMessage());
         }

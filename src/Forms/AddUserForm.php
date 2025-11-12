@@ -2,23 +2,27 @@
 
 namespace App\Forms;
 
+use App\Forms\Validator;
+
 class AddUserForm {
 
     public static $errors = [];
+    public static $rules = [
+        'name' => [
+            'required' => true,
+            'minLength' => 2,
+            'maxLength' => 100,
+        ],
+        'email' => [
+            'required' => true,
+            'email' => true,
+            'maxLength' => 255,
+        ],
+    ];
 
     public static function validate(array $data): bool {
-        self::$errors = [];
 
-        if (empty($data['name'])) {
-            self::$errors['name'] = 'Name is required.';
-        }
-
-        if (empty($data['email'])) {
-            self::$errors['email'] = 'Email is required.';
-        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            self::$errors['email'] = 'Invalid email format.';
-        }
-
+        self::$errors = Validator::validate($data, self::$rules);
         return empty(self::$errors);
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "deli/deli-app",
+    "name": "delique/user-manager",
     "type": "project",
     "autoload": {
         "psr-4": {
