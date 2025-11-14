@@ -13,8 +13,9 @@ class HomeController extends Controller {
 
     #[Route('/', 'GET')]
     public function __invoke(): string  {
-        $users = Database::getInstance()->fetchAll("SELECT * FROM users");
-        return View::render('pages/index.view', ['users' => $users, 'title' => 'Home Page']);
+        $users = Database::fetchAll("SELECT * FROM users");
+        $usersCount = count($users);
+        return View::render('pages/index.view', ['users' => $users, 'usersCount' => $usersCount, 'title' => 'Home Page']);
     }
 
     #[Route('/get-users', 'GET')]
