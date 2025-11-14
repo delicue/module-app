@@ -12,6 +12,11 @@ class Database {
         try {
             $this->connection = new PDO('sqlite:' . __DIR__ . '/databases/database.db');
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->connection->exec("CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL
+            )");
             Log::info("Connected to the SQLite database successfully.");
         } catch (\PDOException $e) {
             Log::error("Database connection failed: " . $e->getMessage());
@@ -28,8 +33,16 @@ class Database {
         return $this->connection;
     }
 
+    /**
+     * Finds all records in specified query.
+     * @param mixed $query
+     * @param mixed $params
+     * @return array
+     */
     public static function fetchAll($query, $params = []): array {
-        $stmt = self::getInstance()->getConnection()->prepare($query);
+        $stmt = self::getInstance()
+            ->getConnection()
+            ->prepare($query);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -42,7 +55,9 @@ class Database {
      * @return array|null
      */
     public static function fetchOne($query, $params = []): ?array {
-        $stmt = self::getInstance()->getConnection()->prepare($query);
+        $stmt = self::getInstance()
+            ->getConnection()
+            ->prepare($query);
         $stmt->execute($params);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result === false ? null : $result;
@@ -56,5 +71,10 @@ class Database {
     public static function all($table): array {
         $query = "SELECT * FROM :table";
         return self::fetchAll($query, [$table]);
+    }
+
+    public static function count($table): int {
+        $result = self::fetchOne("SELECT COUNT(*) as count FROM :table", [$table]);
+        return $result ? (int)$result['count'] : 0;
     }
 }
