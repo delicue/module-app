@@ -45,7 +45,7 @@
                 </li>
             <?php endforeach; ?>
         </ul>
-        <div>Total Users: <?= htmlspecialchars(App\View::data('usersCount')) ?></div>
+        <div class="p-4 bg-white text-gray-800 container mx-auto">Total Users: <?= htmlspecialchars(App\View::data('usersCount')) ?></div>
     <?php endif; ?>
 
 </main>
