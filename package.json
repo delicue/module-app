@@ -1,6 +1,6 @@
 {
-  "name": "user-manager",
-  "description": "A simple PHP MVC framework with routing, templating, and database integration.",
+  "name": "user-db",
+  "description": "user database management system",
   "scripts": {
     "build": "npm run tailwindcss-build",
     "dev": "npm run tailwindcss-dev",
