@@ -4,7 +4,7 @@
     </h2>
 
     <!-- User Search -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 container mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 container mx-auto">
         <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700">
             <h3 class="text-2xl font-bold mb-4">Search Users</h3>
             <div class="container place-items-center">
@@ -45,40 +45,7 @@
                 </li>
             <?php endforeach; ?>
         </ul>
+        <div>Total Users: <?= htmlspecialchars(App\View::data('usersCount')) ?></div>
     <?php endif; ?>
 
 </main>
-<script src="/js/user-search.js"></script>
-<script>
-    (function() {
-        function showFlash(args) {
-            var data = Array.isArray(args) ? args[0] : args;
-            if (Array.isArray(data) && data.length) data = data[0];
-            var msg = (data && data.message) ? data.message : String(data || '');
-            var el = document.getElementById('php-flash');
-            if (!el) return;
-            el.textContent = msg;
-            el.classList.remove('hidden');
-            setTimeout(function() {
-                el.classList.add('hidden');
-            }, 5000);
-        }
-
-        // Always listen for DOM CustomEvent dispatched by the hydrator
-        document.addEventListener('flash', function(e) {
-            showFlash(e.detail);
-        });
-
-        // If the JS bridge exists, register on it. If not yet present, poll briefly.
-        if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
-            window.PHPEventEmitter.on('flash', showFlash);
-        } else {
-            var _i = setInterval(function() {
-                if (window.PHPEventEmitter && typeof window.PHPEventEmitter.on === 'function') {
-                    window.PHPEventEmitter.on('flash', showFlash);
-                    clearInterval(_i);
-                }
-            }, 50);
-        }
-    })();
-</script>
