@@ -19,7 +19,8 @@ These routes registered in `\App\Module::registerRoutesFromAttributes()` and the
 
 ## How to Run Application
 
-First, ensure you have PHP 8.5 installed
+First, ensure you have PHP 8.x, Composer, and Node installed.
+run `composer install` and `npm install` to install necessary packages.
 Use the command `php serve` to run it in your local browser. By default, it is located at `https://localhost:3000`.
 Alternatively, this can be run in Laravel Herd using the command `herd open` from this directory. Ensure Herd is installed before running command.
 
