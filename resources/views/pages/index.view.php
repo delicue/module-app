@@ -3,8 +3,8 @@
         User Database- Manage Your Users Easily
     </h2>
 
-    <!-- User Search -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 container mx-auto">
+        <!-- User Search -->
         <div class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700">
             <h3 class="text-2xl font-bold mb-4">Search Users</h3>
             <div class="container place-items-center">
@@ -15,12 +15,13 @@
         <form class="container mx-auto px-8 py-4 bg-white rounded shadow shadow-sky-900 hover:shadow-lg mb-16 hover:shadow-sky-700" method="POST" action="/add-user">
             <input type="hidden" name="_csrf_token_add_user" value="<?= htmlspecialchars(generateCsrfToken('add_user')) ?>">
             <h2 class="text-2xl font-bold mb-4">Add New User</h2>
+
             <div class="gap-4 grid grid-cols-2">
                 <div class="flex flex-wrap">
                     <input type="text" autocomplete="name" name="name" placeholder="Enter user name" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
-                    <span class="text-red-600"><?= htmlspecialchars(\App\Forms\AddUserForm::$errors['name'] ?? '') ?></span>
+                    <span class="text-red-600"><?= htmlspecialchars(\App\Forms\AddUserForm::getErrors()['name'] ?? '') ?></span>
                     <input type="email" name="email" autocomplete="email" placeholder="Enter user email" class="px-2 py-1 rounded w-full bg-gray-50 border border-gray-200 text-gray-800 mb-4">
-                    <p><span class="text-red-600"><?= htmlspecialchars(\App\Forms\AddUserForm::$errors['email'] ?? '') ?></span></p>
+                    <p><span class="text-red-600"><?= htmlspecialchars(\App\Forms\AddUserForm::getErrors()['email'] ?? '') ?></span></p>
                 </div>
                 <div>
                     <input type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold  py-1 px-4 rounded" value="Add User">

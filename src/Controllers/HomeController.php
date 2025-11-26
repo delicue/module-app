@@ -46,15 +46,18 @@ class HomeController extends Controller {
                 $stmt->execute();
             }
             else {
++                // Store validation errors in session before redirect
+                Session::set('form_errors', AddUserForm::$errors);
                 throw new Exception('Validation failed: ' . implode(', ', AddUserForm::$errors));
             }
-            header('Location: /');
-
-            exit();
         }
         catch (Exception $e) {
             http_response_code(400);
             return "Error: " . htmlspecialchars($e->getMessage());
+        }
+        finally {
+            header('Location: /');
+            exit();
         }
     }
 }
