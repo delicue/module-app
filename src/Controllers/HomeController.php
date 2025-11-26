@@ -34,6 +34,7 @@ class HomeController extends Controller {
             if (!verifyCsrfToken('add_user')) {
                 throw new Exception('Invalid CSRF token.');
             }
+            
             $name = $_POST['name'];
             $email = $_POST['email'];
 

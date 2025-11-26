@@ -8,11 +8,12 @@ use App\Session;
 class AddUserForm {
 
     public static $errors = [];
+    
     public static $rules = [
         'name' => [
             'required' => true,
             'minLength' => 2,
-            'maxLength' => 20,
+            'maxLength' => 50,
         ],
         'email' => [
             'required' => true,
@@ -22,7 +23,6 @@ class AddUserForm {
     ];
 
     public static function validate(array $data): bool {
-
         self::$errors = Validator::validate($data, self::$rules);
         return empty(self::$errors);
     }
